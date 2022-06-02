@@ -1,4 +1,4 @@
-# Task Priority Control for a Mobile Manipulator 
+# Towards 2D Indoor Mapping, A Hybrid Exploration Algorithm 
 
 **This project belongs to the Universitat de Girona. It is forbidden to publish this project or any derivative work in any public repository.**
 
@@ -10,13 +10,14 @@ Prototype and main components:
 <figcaption align="center"><b>Figure 1. Turtlebot 2: Robotic Platform for Testing the Algorithm</b></figcaption>
 </figure>
 
-The present package provides the implementation of the Task Priority Control Algorithm on a mobile manipulator for pick and place applications using Aruco markers to know the position of the object to pick. The whole implementation takes place in ROS Noetic and the custom nodes were written in Python3 using the NumPy library for matrix operations.
+The present package presnets the fina project for the Hands On Planning course which is base dn building an exploration algorithm for a differential drive robot equipped with a LiDAR, which in this case is a modified Turtlebo 2 robot as shown in Figure 1. The exploration algorithm uses a hybrid apprach combining Frontier Based Exploration and Sampling Based exploration in order to take the advantages of both of them. The algorithm uses a custom implementation of the RRT* path planning algorithm with the use of Dubins path in order to embed kniematic contrains on the generated path. The final part of hte project is a path tracking control algorithm for making the robot follow the generated path, for this purpose, the Tracking PID package was configured and used for achieving the path tracking behavior. Figure 2 shows the turtlebot on an environmet with Frontier and about to move to the Next Best View (NBV).
+
+
 
 <p align="center">
-<img src="./docs/imgs/pseudo.png" alt="drawing" width="255" title = "Task Priority Algorithm"/>
-<img src="./docs/imgs/dof_diagram.png" alt="drawing" width="267" title = "Robots DofF"/>
+<img src="./docs/imgs/exploration.png" alt="drawing" width="267" title = "Robot exploration"/>
 </p>
-<figcaption align="center"><b>Figure 2. Task Priority Control Pseudo Code and Robot's schematic considering each DoF</b></figcaption>
+<figcaption align="center"><b>Figure 2.Hybrid based robot exploration for solving the NBV problem</b></figcaption>
 </figure>
 
 ## Team Members:
@@ -34,23 +35,24 @@ This project has been carried out by:
 │   └── parameters.yaml
 ├── docs
 │   └── imgs
-│       ├── aruco_sim.png
-│       ├── aruco_vis.png
-│       ├── dof_diagram.png
-│       ├── pseudo.png
+│       ├── exploration.png
 │       ├── software.png
 │       └── turtlebot_hardware.png
 ├── launch
-│   ├── intrevention.launch
+│   ├── octomap.launch
 │   └── simulation.launch
+├── map.bt
 ├── package.xml
 ├── README.md
 └── scripts
-    ├── aruco_detector.py
-    ├── mobile_control_v2.py
-    ├── mobile_tasks.py
-    └── task_monitor.py
-
+    ├── exploration_node.py
+    ├── laser_scan_to_point_cloud.py
+    ├── online_planning_node.py
+    └── utils_lib
+        ├── bresenham.py
+        ├── exploration.py
+        ├── __init__.py
+        └── safe_planning.py
 ```
 
 ## Required Packages
@@ -107,7 +109,7 @@ sudo apt install ros-noetic-ros-controllers
 # Install xterm terminal emulator
 sudo apt-get install -y xterm 
 
-# Project Specic Requirements: 
+# ***** Project Specic Requirements: *****
 
 # Install octomap server
 sudo apt-get install ros-noetic-octomap
@@ -138,7 +140,7 @@ Go to your ROS_workspace/src directory
 Clone the project or extact the compressed file in ROS_workspace/src directory 
 
 ```bash
-  $ git clone https://github.com/enriquea52/Hands-On-Intervention
+  $ git clone https://github.com/enriquea52/Hands-On-Planning
 ```
 
 Go back to ROS_workspace directory
@@ -157,13 +159,13 @@ The package can be run either for a real platform or for a simulated environment
 
 * Real Platform
 ```bash
-  $ roslaunch intervention intervention.launch tbot_name:=turtlebotX
+  $ roslaunch planning planning.launch tbot_name:=turtlebotX
 ```
 Where X can be either 1, 2 or 3
 * Simulated Environment
 
 ```bash
-  $ roslaunch intervention simulation.launch
+  $ roslaunch planning simulation.launch
 ```
 
 ## Software Architecture
@@ -178,13 +180,13 @@ Where X can be either 1, 2 or 3
 
 <p float="left">
 
-Task Priotrity Control To Pick an Aruco (Simulation)
+Robot Exploration (Simulation)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RIYBSQnRryc/0.jpg)](https://youtu.be/RIYBSQnRryc)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/mjnNn-cA8e4/0.jpg)](https://youtu.be/mjnNn-cA8e4)
 
-Task Priotrity Control To Pick an Aruco (Real System)
+Robot Exploration  (Real System)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZnocUXVv37o/0.jpg)](https://youtu.be/ZnocUXVv37o)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1ImR3idGr1s/0.jpg)](https://youtu.be/1ImR3idGr1s)
 
 </p>
 
