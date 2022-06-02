@@ -1,0 +1,11 @@
+
+octomap_topic: /projected_map
+
+tbot_base_vel_cmd_topic: $(arg tbot_name)/cmd_vel_mux/input/navi
+
+tbot_odometry_topic: $(arg tbot_name)/odom
+
+tbot_rplidar_scan_topic: $(arg tbot_name)/rplidar/scan
+
+tbot_rplidar_scan_offset: $(arg laser_scan_offset)
+

@@ -1,0 +1,49 @@
+<launch>
+
+    <!-- Launching simulation-->
+    <param name="~frame_id" type="string" value="odom" />
+
+    <!-- Loading parameters required for the pkg -->
+    <arg name="tbot_name" default="/turtlebot2"/>
+    <arg name="laser_scan_offset" default="0.0"/>
+    <rosparam file="$(find planning)/config/parameters.yaml" command="load" subst_value="true"/>
+
+    <!-- Launching laser_scan to pointcloud pkg-->
+    <node pkg="planning" type="laser_scan_to_point_cloud.py" name="laserscan_to_pointcloud"/>
+
+    <!-- Octomap server node-->
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap" output="screen">
+        <remap to="/laserscan_to_pointcloud/converted_pc" from="/cloud_in"/>
+    </node>
+
+    <!-- Nodes developed for the exploration task-->
+    <node pkg="planning" type="online_planning_node.py" name="online_planning_node" output="screen"/>
+    <node pkg="planning" type="exploration_node.py" name="exploration_node" output="screen"/>
+
+    <!-- Nodes for the path tracking controller  and their respective configuration-->
+    <!-- Interpolator -->
+    <node name="interpolator" pkg="tracking_pid" type="path_interpolator">
+        <param name="target_x_vel" value="0.2"/>
+        <param name="target_x_acc" value="0.8"/>
+    </node>
+
+    <!-- PID controller -->
+    <node name="controller" pkg="tracking_pid" type="controller" output="screen">
+      <remap from="local_trajectory" to="trajectory"/>
+      <remap from="/move_base/cmd_vel" to="$(arg tbot_name)/cmd_vel_mux/input/navi"/>
+      <!--<remap from="/move_base/cmd_vel" to="/cmd_vel"/>-->
+      <param name="controller_debug_enabled" value="True"/>
+      <param name="l" value="0.1"/>
+      <param name="Kp_long" value="0.3"/>
+      <param name="Ki_long" value="0.0"/>
+      <param name="Kd_long" value="0.05"/>
+      <param name="Kp_lat" value="1.2"/>
+      <param name="Ki_lat" value="0.0"/>
+      <param name="Kd_lat" value="0.0"/>
+      <param name="Kp_ang" value="0.8"/>
+      <param name="Ki_ang" value="0.0"/>
+      <param name="Kd_ang" value="0.001"/>
+      <param name="map_frame" value="odom"/>
+    </node>
+
+</launch>
