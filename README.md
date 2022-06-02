@@ -128,7 +128,6 @@ git clone https://github.com/enriquea52/rrt_dubins.git
 
 ```
 
-
 ## How to use it:
 
 Go to your ROS_workspace/src directory
@@ -176,7 +175,7 @@ Where X can be either 1, 2 or 3
 <figcaption align="center"><b>Figure 3. ROS software architecture</b></figcaption>
 </figure>
 
-## Video demosntrations (Click on video):
+## Video demonstrations (Click on video):
 
 <p float="left">
 
