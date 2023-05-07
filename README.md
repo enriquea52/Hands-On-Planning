@@ -1,6 +1,5 @@
 # Towards 2D Indoor Mapping, A Hybrid Exploration Algorithm 
 
-**This project belongs to the Universitat de Girona. It is forbidden to publish this project or any derivative work in any public repository.**
 
 Prototype and main components:
 
